@@ -1,17 +1,21 @@
 import { useState } from 'react'
 
-// const GenerateRandom = (props) =>
-// {
-//   while(1)
-//   {
-//     let num = Math.round(Math.random()*10);
+const Button = (props) => (
+  <button onClick = {props.handleClick}>
+    {props.text}
+  </button>
+)
 
-//     if (num < props.length)
-//     return num
-//     else
-//     continue
-//   }
-// }
+const DisplayAnecdote = ({anecdote, votes}) =>
+{
+  return (
+  <div>
+    <p>{anecdote}</p>
+    <p>has {votes} votes</p>
+  </div>
+  )
+}
+
 
 const App = () => {
   const anecdotes = [
@@ -25,8 +29,10 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
+  console.log(points)
   
-  
+
 
 const GenerateRandom = () =>
 {
@@ -35,17 +41,29 @@ const GenerateRandom = () =>
     let num = Math.round(Math.random()*10);
 
     if (num < anecdotes.length)
-    return num
+    {setSelected(num)
+    break}
     else
     continue
   }
+  
 }
+
+const handleVotes = () =>
+{
+  const newPoints = [...points]
+  newPoints[selected] += 1
+  setPoints(newPoints)
+}
+
 
 
   return (
     <div>
-      {anecdotes[selected]}
-      <p><button onClick={() => setSelected(GenerateRandom)}>next anecdote</button></p>
+      <DisplayAnecdote anecdote = {anecdotes[selected]} votes = {points[selected]} />
+      <Button handleClick={() => GenerateRandom()} text="next anecdote" />
+      <Button handleClick={() => handleVotes()} text="vote" />
+
     </div>
   )
 }
