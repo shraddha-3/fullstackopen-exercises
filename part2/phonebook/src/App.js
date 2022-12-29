@@ -4,6 +4,7 @@ import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -11,7 +12,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearch] = useState('')
-  const [deleteNameId, setDeleteId] = useState(0)
+  const [message, setMessage] = useState()
+  const [errorMessage, setErrorMessage] = useState()
 
   useEffect(() => {
     console.log('effect')
@@ -40,14 +42,27 @@ const App = () => {
       const per = persons.find(person => person.name === newName)
       const nameObj = {...per, number: newNumber}
       console.log(nameObj)
-      if(window.confirm(newName + "has already been added to the phonebook, replace with new number?"))
+      if(window.confirm(newName + " has already been added to the phonebook, replace with new number?"))
       {
         personService
         .update(nameObj.id, nameObj)
         .then(returnedPerson => {
-      setPersons(persons.map(person => person.id === returnedPerson.id? returnedPerson: person))})
+        setPersons(persons.map(person => person.id === returnedPerson.id? returnedPerson: person))
+      setMessage("Number has been succesfully updated!")
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+        
         setNewName('')
-        setNewNumber('')
+        setNewNumber('')})
+        .catch(error => {
+          setErrorMessage(`${newName} has been deleted from the server!`)
+          setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        })
+        
+        
       }
     }
 
@@ -56,6 +71,11 @@ const App = () => {
     .create(nameObject)
     .then(returnedPerson => {
       setPersons(persons.concat(returnedPerson))
+
+      setMessage("Entry has been succesfully added to the phonebook!")
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       setNewName('')
       setNewNumber('')
     })
@@ -82,19 +102,25 @@ const App = () => {
 
   const handleDeletePerson = (id) => {
     
-    if (window.confirm("Are you sure?"))
+    if (window.confirm("Are you sure you want to delete the entry?"))
     {
       personService.deletePerson(id)
       console.log(persons)
       const filteredPersons = () => persons.filter(person => person.id !== id)
       setPersons(filteredPersons)
       console.log(persons.length)
+
+      setMessage("Entry has been succesfully deleted from the phonebook!")
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification errorMessage={errorMessage} message={message}/>
       <Filter value={searchName} onChange={handleFilter}/>
       <h3>add note</h3>
       <PersonForm onSubmit={addNewPerson} newName={newName} handleNewPerson={handleNewPerson} newNumber={newNumber} handleNewNumber={handleNewNumber}/>
