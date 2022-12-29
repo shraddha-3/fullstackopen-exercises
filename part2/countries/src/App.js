@@ -35,7 +35,7 @@ const App = () => {
   return (
     <>
       <Filter search={search} onChange={handleFilter}/>
-      <Countries countries={countries} />
+      <Countries countries={countries} setCountries={setCountries}/>
     </>
   );
 }

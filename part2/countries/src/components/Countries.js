@@ -1,6 +1,7 @@
 import React from 'react'
+import Country from './Country'
 
-const Countries = ({countries}) => {
+const Countries = ({countries, setCountries}) => {
   console.log(countries.length)
   if(countries.length > 10)
   {
@@ -14,27 +15,18 @@ const Countries = ({countries}) => {
   else if (countries.length === 1)
   {
     const country = countries[0]
-    
-    const languages = Object.entries(country.languages)
     return(
-      <>
-      <h1>{country['name']['common']}</h1>
-      <div>capital {country['capital']}</div>
-      <div>area {country['area']}</div>
-      <h3>languages</h3>
-      <ul>
-        {languages.map(language => <li key={language[0]}>{language[1]}</li>)}
-      </ul>
-      <img src={country.flag} alt="country flag"></img>
-      </>
-    )
+    <Country country={country} />)
   }
 
   else{
       console.log(countries[0])
       return(
       <ul>
-        {countries.map(country => <li key={country.name.common}>{country['name']['common']}</li>)}
+        {countries.map(country => 
+        <li key={country.name.common}>
+            {country['name']['common']} <button onClick={() => setCountries([country])}>show</button>
+        </li>)}
       </ul>)
   }
 }
