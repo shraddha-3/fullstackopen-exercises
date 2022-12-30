@@ -1,7 +1,10 @@
 import React from 'react'
+import Weather from './Weather'
 
 const Country = ({country}) => {
     const languages = Object.entries(country.languages)
+
+    
     return(
       <>
       <h1>{country['name']['common']}</h1>
@@ -11,7 +14,8 @@ const Country = ({country}) => {
       <ul>
         {languages.map(language => <li key={language[0]}>{language[1]}</li>)}
       </ul>
-      <img src={country.flag} alt="country flag"></img>
+      <img src={country.flags.png} alt="country flag"></img>
+      <Weather country={country} />
       </>
     )
 }

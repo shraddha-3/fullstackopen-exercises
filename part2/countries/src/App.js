@@ -4,7 +4,7 @@ import Filter from './components/Filter'
 import Countries from './components/Countries'
 
 const App = () => {
-  const [search, setSearch] = useState()
+  const [search, setSearch] = useState('')
   const [allCountries, setAllCountries] = useState([])
   const [countries, setCountries] = useState([])
 
@@ -32,12 +32,15 @@ const App = () => {
   },[search])
     
 
-  return (
+    return (
     <>
       <Filter search={search} onChange={handleFilter}/>
       <Countries countries={countries} setCountries={setCountries}/>
     </>
   );
+  
+
+  
 }
 
 export default App;
