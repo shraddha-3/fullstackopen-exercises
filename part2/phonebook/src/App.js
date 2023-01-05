@@ -56,7 +56,7 @@ const App = () => {
         setNewName('')
         setNewNumber('')})
         .catch(error => {
-          setErrorMessage(`${newName} has been deleted from the server!`)
+          setErrorMessage(`${error.response.data.error}`)
           setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
@@ -79,9 +79,16 @@ const App = () => {
       setNewName('')
       setNewNumber('')
     })
-    }
+    .catch(error => {
+      console.log(error.response.data.error)
+      setErrorMessage(`${error.response.data.error}`)
+          setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+    })
     
   }
+}
 
   const handleNewPerson = (event) => {
     setNewName(event.target.value)
